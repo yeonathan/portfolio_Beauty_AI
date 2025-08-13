@@ -58,7 +58,4 @@ L’utilisateur peut :
   
 ## URL : https://yeonathan.github.io/portfolio_Beauty_AI/
 
----
-
-## 📁 Structure
 
