@@ -54,6 +54,8 @@ L’utilisateur peut :
    - un affichage visuel des couleurs dominantes
    - une synthèse de maquillage cohérente avec le teint détecté
   
+
+  
 ## URL : 
 
 ---
