@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Beauty AI – Teint & maquillage personnalisé</title>
+  <style>
+    body { font-family: sans-serif; background: #fdfdfd; max-width: 800px; margin: auto; padding: 20px; color: #333; }
+    h1 { color: #b71c1c; }
+    input[type="file"] { margin-top: 10px; }
+    img { max-width: 100%; margin-top: 15px; display: none; }
+    .colors-container { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .circle-color {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      border: 1px solid #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75em;
+      text-align: center;
+    }
+    .makeup-box {
+      margin-top: 25px;
+      background: #fff3e0;
+      border-left: 5px solid #f57c00;
+      padding: 15px;
+      border-radius: 6px;
+    }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>💄 Beauty AI – Analyse de teint</h1>
+<p>Upload une photo de visage pour détecter les <b>5 couleurs dominantes</b> et obtenir une <b>palette de maquillage adaptée</b>.</p>
+
+<input type="file" accept="image/*" onchange="handleImage(this)">
+<canvas id="canvas" style="display:none;"></canvas>
+<img id="preview" />
+
+<div class="colors-container" id="colorPreview" style="display: none;"></div>
+<div class="makeup-box" id="makeupSuggestion" style="display: none;"></div>
+
+<script>
+function handleImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const img = document.getElementById("preview");
+    img.src = e.target.result;
+    img.style.display = "block";
+    setTimeout(() => extractColors(img), 500);
+  };
+  reader.readAsDataURL(file);
+}
+
+function extractColors(img) {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  ctx.drawImage(img, 0, 0);
+
+  const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  const colorCounts = {};
+  let totalRGB = [0, 0, 0];
+
+  for (let i = 0; i < data.length; i += 4 * 1000) {
+    const r = data[i], g = data[i+1], b = data[i+2];
+    const key = `${r},${g},${b}`;
+    colorCounts[key] = (colorCounts[key] || 0) + 1;
+  }
+
+  const sortedColors = Object.entries(colorCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(entry => entry[0]);
+
+  const colorPreview = document.getElementById("colorPreview");
+  colorPreview.innerHTML = "";
+  sortedColors.forEach(rgb => {
+    const [r, g, b] = rgb.split(',').map(Number);
+    const hex = rgbToHex(r, g, b);
+    totalRGB[0] += r; totalRGB[1] += g; totalRGB[2] += b;
+
+    colorPreview.innerHTML += `
+      <div class="circle-color" style="background:${hex}">
+        <span style="color:${getTextColor(r, g, b)}">${hex}</span>
+      </div>
+    `;
+  });
+
+  colorPreview.style.display = "flex";
+
+  const avgR = totalRGB[0] / sortedColors.length;
+  const avgG = totalRGB[1] / sortedColors.length;
+  const avgB = totalRGB[2] / sortedColors.length;
+
+  const tone = detectSkinTone(avgR, avgG, avgB);
+  const suggestion = makeupSuggestions[tone];
+
+  document.getElementById("makeupSuggestion").innerHTML = `
+    <h3>💋 Maquillage recommandé pour un teint <em>${tone}</em></h3>
+    ${suggestion}
+  `;
+  document.getElementById("makeupSuggestion").style.display = "block";
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+function detectSkinTone(r, g, b) {
+  const avg = (r + g + b) / 3;
+  if (avg < 80) return "foncé";
+  if (avg < 160) return "moyen";
+  return "clair";
+}
+
+function getTextColor(r, g, b) {
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness > 125 ? "#000" : "#fff";
+}
+
+const makeupSuggestions = {
+  clair: `
+    <ul>
+      <li><b>Fond de teint :</b> Beige rosé clair</li>
+      <li><b>Blush :</b> Pêche doux</li>
+      <li><b>Yeux :</b> Taupe, champagne</li>
+      <li><b>Lèvres :</b> Rose nude</li>
+    </ul>
+  `,
+  moyen: `
+    <ul>
+      <li><b>Fond de teint :</b> Beige doré</li>
+      <li><b>Blush :</b> Abricot ou bronze doux</li>
+      <li><b>Yeux :</b> Or, kaki, brun chaud</li>
+      <li><b>Lèvres :</b> Framboise ou rouge cerise</li>
+    </ul>
+  `,
+  foncé: `
+    <ul>
+      <li><b>Fond de teint :</b> Ébène ou cacao mat</li>
+      <li><b>Blush :</b> Prune, orange brûlé</li>
+      <li><b>Yeux :</b> Cuivre, violet profond</li>
+      <li><b>Lèvres :</b> Bordeaux, chocolat foncé</li>
+    </ul>
+  `
+};
+</script>
+
+</body>
+</html>
