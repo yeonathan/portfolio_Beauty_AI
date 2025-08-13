@@ -1,75 +1,62 @@
-#💄 Projet 2 — Beauty AI : Analyse de visage & maquillage personnalisé
-##🎯 Objectif
+# 💄 Beauty AI – Détection de teint et suggestion de maquillage
 
-Cette application web permet à un utilisateur d’uploader une photo de son visage pour :
+## 🧠 Contexte
 
-    Détecter automatiquement les 5 couleurs dominantes de la peau
+Ce projet a été développé dans le cadre d’un portfolio Data/IA pour illustrer comment une approche simple de traitement d’image peut servir à des applications concrètes dans les domaines de la beauté et de l’e-commerce.
 
-    Déterminer un type de teint global (clair, moyen, foncé)
+L’objectif : **personnaliser l’expérience beauté** grâce à une application web légère, sans serveur, capable de détecter le teint d’un visage à partir d’une photo, puis de suggérer une **palette de maquillage cohérente**.
 
-    Afficher une synthèse de maquillage personnalisée :
+Le projet combine :
+- 🎨 extraction de caractéristiques visuelles (couleurs dominantes)
+- 🤖 logique simple de classification par type de peau
+- 💋 recommandations cosmétiques localisées selon le profil détecté
 
-        Fond de teint
+---
 
-        Blush
+## 🎯 Objectifs fonctionnels
 
-        Couleurs pour les yeux
+L’utilisateur peut :
 
-        Couleurs pour les lèvres
+- 📤 Uploader une **photo de visage**
+- 🧠 Obtenir une analyse des **5 couleurs dominantes** de sa peau
+- 📊 Identifier automatiquement son **type de teint** (clair, moyen, foncé)
+- 💄 Recevoir une **suggestion synthétique de maquillage personnalisée** (fond de teint, blush, yeux, lèvres)
 
-##🧪 Fonctionnalités
+---
 
-    ✅ 100% autonome (HTML + JavaScript)
+## 🧪 Fonctionnalités
 
-    🎨 Affichage interactif des 5 couleurs dominantes en cercles
+- ✅ 100% autonome (HTML + JavaScript, fonctionne offline)
+- 🎨 Cercles interactifs affichant les couleurs dominantes
+- 💡 Teint déterminé automatiquement par moyenne des teintes
+- 💋 Recommandations de maquillage préconfigurées selon le type de peau
+- 🚫 Aucun backend ni API nécessaire
 
-    💋 Suggestion unique de maquillage selon le teint moyen
+---
 
-    🖼️ Analyse faite côté client (pas d’upload externe)
+## 🔧 Technologies utilisées
 
-    🚫 Pas besoin d'API ou de back-end
+| Technologie | Utilisation |
+|-------------|-------------|
+| HTML5       | Interface, structure de la page |
+| CSS3        | Style épuré, responsive |
+| JavaScript  | Analyse d’image, détection de couleurs, logique de teint |
+| Canvas API  | Récupération des pixels de l’image en local |
 
-##📸 Comment l’utiliser
+---
 
-    Ouvrir le fichier beauty-ai-final.html dans un navigateur
+## 📸 Utilisation
 
-    Sélectionner une image de visage
-
-    Lire les résultats :
-
-        Couleurs détectées
-
-        Teint identifié
-
-        Recommandations de maquillage
-
-##📁 Structure
-
-📁 beauty-ai-project/
-├── beauty-ai-final.html      → Fichier HTML exécutable
-└── README.md                 → Présentation du projet
-
-##📌 Technologies utilisées
-
-    HTML5
-
-    CSS3
-
-    JavaScript pur
-
-    Canvas API
-
-##📚 À venir (idées d'amélioration)
-
-    Intégration d’API Beauté IA (YouCam, ModiFace)
-
-    Sélection manuelle de zones (joues, yeux, lèvres)
-
-    Génération d’image avec maquillage simulé (vision par ordinateur)
-
-##📜 Licence
-
-Ce projet est open source pour usage personnel, éducatif .
-Aucune donnée n’est stockée ni transmise à un serveur externe.
-
+1. **Télécharge** ou **clone** ce dépôt
+2. Ouvre le fichier `beauty-ai-final.html` dans un navigateur moderne
+3. Clique sur “Choisir un fichier” pour **uploader une photo de visage**
+4. Obtiens :
+   - un affichage visuel des couleurs dominantes
+   - une synthèse de maquillage cohérente avec le teint détecté
+  
 ## URL : 
+
+---
+
+## 📁 Structure
+
